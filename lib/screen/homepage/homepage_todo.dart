@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
-import 'package:intl/intl.dart';
+import 'package:todo/screen/homepage/controll.dart';
 import 'package:todo/widget/item_alart_dialog.dart';
 import 'package:todo/widget/notecard.dart';
 
@@ -13,10 +13,7 @@ class HomePageToDo extends StatefulWidget {
 }
 
 class _HomePageToDoState extends State<HomePageToDo> {
-  TextEditingController title = TextEditingController();
-  TextEditingController subtitle = TextEditingController();
-  String dateTime = DateFormat.jms().format(DateTime.now());
-  int id = 1;
+  NoteController controller = NoteController();
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +54,7 @@ class _HomePageToDoState extends State<HomePageToDo> {
                             .map((note) =>
                                 noteCard((CompletionHandler handler) async {
                                   // delet data from databese
-                                  await deleteDataFromFireBase(note);
+                                  await controller.deleteDataFromFireBase(note);
                                 }, note))
                             .toList(),
                       );
@@ -84,14 +81,22 @@ class _HomePageToDoState extends State<HomePageToDo> {
                   style: TextStyle(color: Colors.teal),
                 ),
                 content: ItemDialog(
-                    dateTime: dateTime, title: title, subtitle: subtitle),
+                    dateTime: controller.dateTime,
+                    title: controller.title,
+                    subtitle: controller.subtitle),
                 actions: [
                   // add data to firebase
                   IconButton(
                       onPressed: () async {
-                        if (title.text.isNotEmpty && subtitle.text.isNotEmpty) {
-                          addDataToFireBase(context, title, subtitle, dateTime, id);
-                          }
+                        if (controller.title.text.isNotEmpty &&
+                            controller.subtitle.text.isNotEmpty) {
+                          controller.addDataToFireBase(
+                              context,
+                              controller.title,
+                              controller.subtitle,
+                              controller.dateTime,
+                              controller.id);
+                        }
                       },
                       icon: const Icon(
                         Icons.add,
@@ -114,26 +119,4 @@ class _HomePageToDoState extends State<HomePageToDo> {
       ),
     );
   }
-}
-
-addDataToFireBase(context,title,subtitle,dateTime,id){
-  FirebaseFirestore.instance.collection('notes').add({
-    'note_title': title.text,
-    'note_subtitle': subtitle.text,
-    'date': dateTime,
-    'id': id++,
-  }).then((value) {
-    print(value.id);
-    Navigator.pop(context);
-    title.clear();
-    subtitle.clear();
-  }).catchError(
-          (error) => print('Filed to add $error'));
-
-}
-deleteDataFromFireBase(note){
-  FirebaseFirestore.instance
-      .collection('notes')
-      .doc(note.id)
-      .delete();
 }
