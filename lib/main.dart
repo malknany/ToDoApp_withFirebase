@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:todo/screen/homepage/homepage_todo.dart';
+import 'package:todo/screen/homepage/view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

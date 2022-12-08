@@ -2,20 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 
-Widget noteCard(ontap, QueryDocumentSnapshot doc) {
+Widget noteCard(onTap, QueryDocumentSnapshot doc) {
   return Container(
     margin: const EdgeInsets.only(bottom: 20),
     clipBehavior: Clip.hardEdge,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(20)
-    ),
+    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
     child: SwipeActionCell(
       key: ObjectKey(doc),
       trailingActions: <SwipeAction>[
         SwipeAction(
             performsFirstActionWithFullSwipe: true,
             title: "delete",
-            onTap:ontap,
+            onTap: onTap,
             color: Colors.red),
       ],
       child: Container(
@@ -32,14 +30,20 @@ Widget noteCard(ontap, QueryDocumentSnapshot doc) {
             Text(
               doc['note_title'],
               style: const TextStyle(
-                  color: Colors.teal, fontSize: 20, fontWeight: FontWeight.bold),
+                  color: Colors.teal,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
             ),
             Text(
               doc['date'],
               style: const TextStyle(
-                  color: Colors.blueGrey, fontSize: 12, fontWeight: FontWeight.bold),
+                  color: Colors.blueGrey,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 5,),
+            const SizedBox(
+              height: 5,
+            ),
             Text(
               doc['note_subtitle'],
               textAlign: TextAlign.center,
@@ -48,7 +52,6 @@ Widget noteCard(ontap, QueryDocumentSnapshot doc) {
                   fontSize: 15,
                   fontWeight: FontWeight.normal),
             ),
-            //IconButton(onPressed: ontap, icon: Icon(Icons.delete,color: Colors.teal,)),
           ],
         ),
       ),

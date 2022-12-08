@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+
 class ItemDialog extends StatelessWidget {
-  const ItemDialog({Key? key,required this.dateTime,required this.title,required this.subtitle}) : super(key: key);
+  const ItemDialog(
+      {Key? key,
+      required this.dateTime,
+      required this.title,
+      required this.subtitle})
+      : super(key: key);
   final dateTime;
   final title;
   final subtitle;
